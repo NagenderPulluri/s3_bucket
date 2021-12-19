@@ -1,19 +1,44 @@
-jsonencode({
-    Version = "2012-10-17"
-    Id      = "SSLBUCKETPOLICY"
-    Statement = [
-      {
-      "Sid": "NOT-RECOMMENDED-FOR__AWSCONFIG-Rule_s3-bucket-ssl-requests-only",
-      "Action": "s3:GetObject",
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::DOC-EXAMPLE-BUCKET/*"
-      ],
-      "Condition": {
-        "Bool": {
-          "aws:SecureTransport": "true"
-        }
-      },
-      "Principal": "*"
-    }
-  })
+{
+	"Version": "2012-10-17",
+	"Id": "MYBUCKETPOLICY",
+	"Statement": [
+		{
+			"Sid": "IPAllow",
+			"Effect": "Deny",
+			"Principal": "*",
+			"Action": "s3:*",
+      "Resource" : [
+        "arn:aws:s3:::${bucket_name}/*"
+        ],
+			"Condition": {
+				"Bool": {
+					"aws:SecureTransport": "false"
+				}
+			}
+		},
+		{
+			"Sid": "SourceIP",
+			"Effect": "Deny",
+			"Principal": "*",
+			"Action": "s3:*",
+      "Resource" : [
+        "arn:aws:s3:::${bucket_name}/*"
+        ],
+			"Condition": {
+				"NotIpAddress": {
+					"aws:SourceIp": [
+						"11.11.11.11/32",
+						"117.248.69.171/32",
+						"117.248.67.2/32",
+						"117.202.96.123/32",
+						"54.231.0.0/16",
+						"52.216.0.0/15",
+						"3.5.0.0/19",
+						"44.192.134.240/28",
+						"44.192.140.64/28"
+					]
+				}
+			}
+		}
+	]
+}
