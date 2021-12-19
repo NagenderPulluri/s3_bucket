@@ -42,3 +42,15 @@
 		}
 	]
 }
+
+
+
+
+/*
+resource "aws_s3_bucket_policy" "s3_policy" {
+  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  #policy = "${data.template_file.policy.rendered}"
+  policy = templatefile("${path.module}/policy.json", {bucket_name = var.bucket_name})
+  depends_on = [aws_s3_bucket.s3_default]
+}
+*/
